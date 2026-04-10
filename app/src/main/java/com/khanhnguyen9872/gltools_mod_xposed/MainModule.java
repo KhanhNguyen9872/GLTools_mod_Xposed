@@ -1,6 +1,7 @@
 package com.khanhnguyen9872.gltools_mod_xposed;
 
 import com.khanhnguyen9872.gltools_mod_xposed.hooks.NetworkHook;
+import com.khanhnguyen9872.gltools_mod_xposed.hooks.PremiumHook;
 import com.khanhnguyen9872.gltools_mod_xposed.hooks.WebViewHook;
 
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -17,5 +18,6 @@ public class MainModule implements IXposedHookLoadPackage {
         // Initialize all module hooks
         WebViewHook.hook(lpparam.classLoader);
         NetworkHook.hook(lpparam.classLoader);
+        PremiumHook.hook(lpparam.classLoader);
     }
 }

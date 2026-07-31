@@ -1,6 +1,64 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+// build.gradle (Module: app)
+// Sistema de build para el módulo Xposed de red neutral + servidor mock.
+// Requisito: Android Gradle Plugin 8.0+, JDK 17+.
+
 plugins {
-    id 'com.android.application' version '8.0.2' apply false
+    id 'com.android.application'
 }
 
-println "Build script loaded for GLTools_mod_Xposed"
+android {
+    namespace 'com.gltools.offline'
+    compileSdk 34
+
+    defaultConfig {
+        applicationId "com.gltools.offline.xposed"
+        minSdk 21
+        targetSdk 34
+        versionCode 1
+        versionName "1.0-offline"
+
+        // Marcar como módulo Xposed
+        manifestPlaceholders = [
+            xposedDescription: "GLTools Offline Revival - Red Neutral",
+            xposedMinVersion: "93"
+        ]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+            version "3.22.1"
+        }
+    }
+
+    ndkVersion "25.2.9519653"
+}
+
+dependencies {
+    // Xposed API (provided, no empaquetar)
+    compileOnly 'de.robv.android.xposed:api:82'
+    compileOnly 'de.robv.android.xposed:api:82:sources'
+
+    // NanoHTTPD para servidor mock embebido
+    implementation 'org.nanohttpd:nanohttpd:2.3.1'
+
+    // Shizuku API (para integración con Shizuku/ShizukuPlus)
+    implementation 'dev.rikka.shizuku:api:13.1.5'
+    implementation 'dev.rikka.shizuku:provider:13.1.5'
+
+    // AndroidX
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.11.0'
+}

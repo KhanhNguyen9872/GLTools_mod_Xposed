@@ -1,8 +1,9 @@
+// settings.gradle
 pluginManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
+        maven { url 'https://api.xposed.info/' }
     }
 }
 dependencyResolutionManagement {
@@ -10,8 +11,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-        maven { url "https://api.xposed.info/" }
+        maven { url 'https://api.xposed.info/' }
     }
 }
-rootProject.name = "GLTools_mod_Xposed"
+rootProject.name = "GLToolsOfflineRevival"
 include ':app'

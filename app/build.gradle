@@ -17,9 +17,9 @@ android {
     signingConfigs {
         release {
             storeFile file("../release.jks")
-            storePassword "gltools123"
-            keyAlias "gltools"
-            keyPassword "gltools123"
+            storePassword System.getenv("KEYSTORE_PASS")
+            keyAlias System.getenv("KEY_ALIAS")
+            keyPassword System.getenv("KEY_PASS")
         }
     }
 

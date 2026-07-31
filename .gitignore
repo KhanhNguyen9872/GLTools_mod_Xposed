@@ -37,7 +37,6 @@ captures/
 
 # Keystore files
 *.jks
-!release.jks
 *.keystore
 
 # External native build folder generated in Android Studio 2.2 and later

@@ -1,17 +1,8 @@
 pluginManagement {
-    repositories {
-        google()
-        mavenCentral()
-        gradlePluginPortal()
-    }
+    repositories { google(); mavenCentral(); gradlePluginPortal() }
 }
 dependencyResolutionManagement {
-    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
-    repositories {
-        google()
-        mavenCentral()
-        maven { url "https://api.xposed.info/" }
-    }
+    repositories { google(); mavenCentral(); maven { url 'https://api.xposed.info/' } }
 }
-rootProject.name = "GLTools_mod_Xposed"
+rootProject.name = "GLTools2026XRevival"
 include ':app'

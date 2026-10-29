@@ -1,38 +1,67 @@
-plugins {
-    id 'com.android.application'
+plugins { id 'com.android.application' }
+
+def xrKeystoreFile = rootProject.file('release.jks')
+def xrKeystorePass = System.getenv('KEYSTORE_PASS')
+def xrKeyAlias = System.getenv('KEY_ALIAS')
+def xrKeyPass = System.getenv('KEY_PASS')
+
+def xrBuildingRelease = gradle.startParameter.taskNames.any { it.toLowerCase().contains('release') }
+if (xrBuildingRelease) {
+    def xrMissing = []
+    if (!xrKeystoreFile.exists()) xrMissing << "release.jks en la raiz del repo"
+    if (!xrKeystorePass) xrMissing << "KEYSTORE_PASS"
+    if (!xrKeyAlias) xrMissing << "KEY_ALIAS"
+    if (!xrKeyPass) xrMissing << "KEY_PASS"
+    if (!xrMissing.isEmpty()) {
+        throw new GradleException("[XRevival/PR#3] Firmado de release incompleto. Falta: " + xrMissing.join(', ') + ". Exporta las variables de entorno o coloca release.jks en la raiz.")
+    }
 }
 
 android {
-    namespace "com.khanhnguyen9872.gltools_mod_xposed"
-    compileSdk 33
-
+    namespace 'com.xrevival.gltools26'
+    compileSdk 36
     defaultConfig {
-        applicationId "com.khanhnguyen9872.gltools_mod_xposed"
+        applicationId "com.xrevival.gltools26"
         minSdk 26
-        targetSdk 33
-        versionCode 1
-        versionName "1.0"
+        targetSdk 36
+        versionCode 20260806
+        versionName "2026.1.0-xrevival"
     }
-
     signingConfigs {
         release {
-            storeFile file("../release.jks")
-            storePassword "gltools123"
-            keyAlias "gltools"
-            keyPassword "gltools123"
+            storeFile xrKeystoreFile.exists() ? xrKeystoreFile : null
+            storePassword xrKeystorePass ?: ""
+            keyAlias xrKeyAlias ?: ""
+            keyPassword xrKeyPass ?: ""
         }
     }
-
     buildTypes {
         release {
-            minifyEnabled false
-            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".debug"
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+    packagingOptions {
+        resources { excludes += ['META-INF/DEPENDENCIES', 'META-INF/LICENSE*'] }
+    }
+}
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url 'https://api.xposed.info/' }
 }
 
 dependencies {
     compileOnly 'de.robv.android.xposed:api:82'
-    compileOnly 'de.robv.android.xposed:api:82:sources'
 }
